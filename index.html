@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Do you like me</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(135deg, #ffcccc, #ffe6e6 );
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        #question {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .btn {
+            font-size: 1.2rem;
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            background-color:  #ccefff ;
+            box-shadow: #333333c2 2px 2px 6px;
+        }
+
+        #yesButton {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        #noButton {
+            background-color: #f44336;
+            color: white;
+        }
+
+        #gifContainer img {
+            max-width: 300px;
+            max-height: 300px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+        }
+
+        #resultContainer {
+            display: none;
+            text-align: center;
+        }
+
+        #fireworks {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        #loveMessage {
+            display: none;
+            font-size: 2rem;
+            color: #e91e63;
+            margin-top: 20px;
+        }
+
+        #loveGif {
+            display: none;
+            max-width: 300px;
+            max-height: 300px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="content">
+        <div id="question">Do you like me?😁</div>
+        <div id="gifContainer">
+            <img id="currentGif" src="https://media.tenor.com/1tKZRu46xWwAAAAM/bubu-dudu.gif" alt="GIF">
+        </div>
+        <button id="yesButton" class="btn">Yes</button>
+        <button id="noButton" class="btn">No</button>
+    </div>
+
+    <div id="resultContainer">
+        <div id="resultMessage">I knew it! ❤️</div>
+        <img src="https://i.pinimg.com/originals/cc/41/47/cc4147c1188abed1207807ed1ced01ce.gif" alt="Happy GIF">
+    </div>
+
+    <div id="loveMessage">I love you 😘</div>
+    <img id="loveGif" src="https://i.pinimg.com/originals/fa/49/4e/fa494e85b6099eda29f75fa0ae547e7a.gif" alt="Love GIF">
+
+    <canvas id="fireworks"></canvas>
+
+    <script>
+document.addEventListener('DOMContentLoaded', () => {
+    const question = document.getElementById('question');
+    const currentGif = document.getElementById('currentGif');
+    const yesButton = document.getElementById('yesButton');
+    const noButton = document.getElementById('noButton');
+    const resultContainer = document.getElementById('resultContainer');
+    const loveMessage = document.getElementById('loveMessage');
+    const loveGif = document.getElementById('loveGif');
+    const content = document.getElementById('content');
+    let noButtonClicks = 0;
+
+    yesButton.addEventListener('click', () => {
+        resultContainer.style.display = 'block';
+        content.style.display = 'none';
+
+        setTimeout(() => {
+            showValentineQuestion();
+        }, 3000);
+    });
+
+    noButton.addEventListener('click', () => {
+        if (question.textContent === 'Do you like me?😁') {
+            question.textContent = 'Think again!';
+            currentGif.src = 'https://media.tenor.com/GXw6O81_MlcAAAAM/kawaii-kawaii-cat.gif';
+        } else if (question.textContent === 'Think again!') {
+            question.textContent = 'I Gave you Another Chance';
+            currentGif.src = 'https://media.tenor.com/ViqKvHcmPQEAAAAM/please.gif';
+        } else if (question.textContent === 'I Gave you Another Chance') {
+            question.textContent = 'Your favorite Food Swear';
+            currentGif.src = 'https://i.pinimg.com/originals/77/84/06/778406bdc8621ffbe8beeff0519c9c94.gif';
+        } else if (question.textContent === 'Your favorite Food Swear') {
+            question.textContent = 'You have to like me!';
+            currentGif.src = 'https://i.pinimg.com/originals/7c/45/b7/7c45b74379a9f773bb54ba399925bf81.gif';
+        }
+    });
+
+    noButton.addEventListener('click', () => {
+        if (question.textContent === 'You have to like me!') {
+            noButtonClicks++;
+            noButton.style.position = 'absolute';
+            noButton.style.top = `${Math.random() * 80}vh`;
+            noButton.style.left = `${Math.random() * 80}vw`;
+
+            if (noButtonClicks >= 10) {
+                noButton.style.display = 'none';
+            }
+        }
+    });
+
+
+            function showValentineQuestion() {
+                resultContainer.style.display = 'none';
+                content.style.display = 'block';
+                question.textContent = 'Will you be my Valentine? 😊';
+                currentGif.src = 'https://i.pinimg.com/originals/ba/86/ee/ba86ee7591834950faac156dadad4772.gif';
+                yesButton.style.display = 'none';
+                noButton.style.display = 'none';
+                createMultipleValentineButtons();
+            }
+
+            function createMultipleValentineButtons() {
+                const options = ['Yeah', 'Of course', 'Definitely', 'Yes'];
+                options.forEach(option => {
+                    const btn = document.createElement('button');
+                    btn.textContent = option;
+                    btn.classList.add('btn');
+                    btn.addEventListener('click', () => {
+                        triggerFireworks();
+                        removeValentineSection();
+                    });
+                    content.appendChild(btn);
+                });
+            }
+
+            function removeValentineSection() {
+                content.style.display = 'none';
+            }
+
+            function triggerFireworks() {
+                const fireworksCanvas = document.getElementById('fireworks');
+                const ctx = fireworksCanvas.getContext('2d');
+                fireworksCanvas.width = window.innerWidth;
+                fireworksCanvas.height = window.innerHeight;
+                const particles = [];
+
+                class Particle {
+                    constructor(x, y, color) {
+                        this.x = x;
+                        this.y = y;
+                        this.color = color;
+                        this.size = Math.random() * 3 + 1;
+                        this.speedX = Math.random() * 6 - 3;
+                        this.speedY = Math.random() * 6 - 3;
+                        this.opacity = 1;
+                    }
+
+                    update() {
+                        this.x += this.speedX;
+                        this.y += this.speedY;
+                        this.opacity -= 0.02;
+                    }
+
+                    draw() {
+                        ctx.globalAlpha = this.opacity;
+                        ctx.fillStyle = this.color;
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                }
+
+                function createFireworks(x, y) {
+                    const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff'];
+                    for (let i = 0; i < 200; i++) {
+                        particles.push(new Particle(x, y, colors[Math.floor(Math.random() * colors.length)]));
+                    }
+                }
+
+                function animate() {
+                    ctx.clearRect(0, 0, fireworksCanvas.width, fireworksCanvas.height);
+                    for (let i = particles.length - 1; i >= 0; i--) {
+                        particles[i].update();
+                        particles[i].draw();
+                        if (particles[i].opacity <= 0) particles.splice(i, 1);
+                    }
+                    requestAnimationFrame(animate);
+                }
+
+                fireworksCanvas.addEventListener('click', (e) => {
+                    createFireworks(e.clientX, e.clientY);
+                });
+
+                createFireworks(fireworksCanvas.width / 2, fireworksCanvas.height / 2);
+                animate();
+
+                setTimeout(() => {
+                    loveMessage.style.display = 'block';
+                    loveGif.style.display = 'block';
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+</html>
